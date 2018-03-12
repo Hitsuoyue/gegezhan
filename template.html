@@ -3,10 +3,13 @@
 <head>
   <meta charset="utf-8"/>
   <title>template</title>
+  <link rel="stylesheet" href="./index.css">
   <script src="https://cdn.bootcss.com/marked/0.3.17/marked.min.js"></script>
 </head>
 <body>
-<div id="content">%content%</div>
+<div class="wrap">
+  <div id="content">%content%</div>
+</div>
   <script>
     let content = document.getElementById('content');
     let markdown = content.innerHTML;
