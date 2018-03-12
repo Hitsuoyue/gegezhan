@@ -8,21 +8,21 @@
 </head>
 <body>
 <div class="wrap">
-  <div id="content"># this is article1
-## by me
+  <div id="content"><h1 id="this-is-article1">this is article1</h1>
+<h2 id="by-me">by me</h2>
 </div>
 </div>
   <script>
-    let content = document.getElementById('content');
-    let markdown = content.innerHTML;
-    let newMarkdown = HTMLDecode(markdown);
-    let html = marked(newMarkdown);
-    content.innerHTML = html;    
-    
-    //特殊字符在获取 innerHTML 时，会被转换为转义字符，影响 Markdown 内容转换，此处反转回来。 &gt对应 > 
-    function HTMLDecode(text) { 
-      return text.replace(/&gt;/g, '>')
-    }
+    // let content = document.getElementById('content');
+    // let markdown = content.innerHTML;
+    // let newMarkdown = HTMLDecode(markdown);
+    // let html = marked(newMarkdown);
+    // content.innerHTML = html;
+    //
+    // //特殊字符在获取 innerHTML 时，会被转换为转义字符，影响 Markdown 内容转换，此处反转回来。 &gt对应 >
+    // function HTMLDecode(text) {
+    //   return text.replace(/&gt;/g, '>')
+    // }
   </script>
 </body>
 </html>
