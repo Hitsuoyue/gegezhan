@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
-const baseUrl = 'https://hitsuoyue.github.io/gegezhanzi/';
+const baseUrl = 'https://hitsuoyue.github.io/gegezhan/';
 let list = [];
 
 fs.readdir('./list', function (error, files) {
