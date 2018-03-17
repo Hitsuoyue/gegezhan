@@ -18,6 +18,7 @@ fs.readdir('./list', function (error, files) {
 
 fs.readdir('./', function (error, files) {
     files.forEach(file=>{
+        console.log('file', file);
         if(file.substring(file.length-7, file.length) === 'md.html'){
             list.push(file);
         }
@@ -35,6 +36,7 @@ function modifyList() {
     let container = $('.container');
 
 
+    console.log('list', list);
     list.forEach((item,index)=>{
         let url = `${baseUrl}${item}`;
         let title = item.substring(0, item.length-8);
