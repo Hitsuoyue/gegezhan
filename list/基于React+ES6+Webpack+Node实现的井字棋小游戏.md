@@ -1,6 +1,7 @@
+# 基于 React + ES6 + Webpack + Node 实现的井字棋小游戏
 本实例基于 React + ES6 + Webpack + Node 实现一个井字棋的小游戏，来进一步深刻理解 React 的组件化思想。
 
-###1. 效果预览
+### 1. 效果预览
 您可点击[预览](https://hitsuoyue.github.io/TicTacToe/)进行效果预览。
 井字棋规则如下：
 * 下棋操作：A / B 两人轮流下棋，下好后该点显示下棋人的名字
@@ -9,7 +10,7 @@
 * 重开游戏：点击棋盘上方刷新按钮，清楚当前棋盘数据，重新开始游戏
 * 步骤显示及步骤还原：右侧显示步骤按钮，点击即可调到对应步骤对应的棋盘面
 
-###2. 项目框架搭建
+### 2. 项目框架搭建
 项目目录结构如下图：
 ![](http://upload-images.jianshu.io/upload_images/8879462-8cb832e6c28183a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
@@ -115,6 +116,7 @@ module.exports = {
 </html>
 ```
 * 新建 src 文件夹存放项目代码，并在src 文件夹内新建 TicTacToe.js 文件，作为游戏区域外层组件
+
 ```
 import React, {Component} from 'react';
 
@@ -130,8 +132,10 @@ class TicTacToe extends Component{
 
 export default TicTacToe;
 ```
+
 * 新建 index.scss 文件，在后续的入口文件中引用
 * 新建 app.js 文件作为项目入口文件，引用 src 内的 TicTacToe 组件及 index.scss 文件
+
 ```
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
@@ -147,22 +151,24 @@ class APP extends Component{
 }
 ReactDOM.render(<APP/>, document.getElementById('app'));
 ```
+
 * 至此，运行 npm start 即可启动项目，浏览器会自动打开 8060 端口，运行项目，效果如下图，接下来就可以进行组件划分。
 ![](http://upload-images.jianshu.io/upload_images/8879462-110998459c06a2a0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
-###3. 组件划分
+### 3. 组件划分
 * 从外到内划分，创建组件框架，完成引用，后进行功能完善
 React 最核心的思想就是组件化，那么首先我们将井字棋游戏区域，按照显示和功能划分为组件。划分时，我采用了从外到内的顺序。
 ![](http://upload-images.jianshu.io/upload_images/8879462-4b8cc2be7cfb7235.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/620)
 如上图，井字棋可划分为四部分，对应TicTacToe 、Header、Board、Steps四个组件。
 
-###4. 初步创建组件框架
+### 4. 初步创建组件框架
 * 从内到外创建，然后在外层引用
-#####Header 组件：头部提示区
+##### Header 组件：头部提示区
 功能：显示当前下棋人、提示有人连线成功、重开游戏
 render 代码中，status 为当前提示文字，<button/> 为重开游戏按钮
 新建 Header 组件
+
 ```
 import React, {Component} from 'react';
 
@@ -181,8 +187,10 @@ class Header extends Component{
 
 export default Header;
 ```
+
 Header 组件需要从上层传下 winner、master 数据。
 在 TicTacToe 组件中调用
+
 ```
 import React, {Component} from 'react';
 import Header from './Header';
@@ -211,10 +219,12 @@ class TicTacToe extends Component{
 export default TicTacToe;
 
 ```
+
 效果如下图：
 ![](http://upload-images.jianshu.io/upload_images/8879462-8a4c161d48716520.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ##### Board 组件：棋盘组件，包含九个小棋盘格
+
 ```
 import React, {Component} from 'react';
 
@@ -252,8 +262,10 @@ class Board extends Component{
 export default Board;
 
 ```
+
 Board 组件需要从上层组件传入 squares、onClickSquare 数据。
 下面在 TicTacToe 组件中调用 Board 组件，并添加 squares 数据和 onClickSquare 函数。
+
 ```
 import React, {Component} from 'react';
 import Header from './Header';
@@ -314,7 +326,9 @@ class TicTacToe extends Component{
 
 export default TicTacToe;
  ```
+
 在 index.scss 中加入样式：
+
 ```
 .board{
   width: 120px;
@@ -332,9 +346,11 @@ export default TicTacToe;
   }
 }
 ```
+
 运行结果如下：
 ![](http://upload-images.jianshu.io/upload_images/8879462-8ffb871881979f6b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 ##### Steps 组件：步骤列组件，进行一步操作则产生一个步骤条，点击步骤条则跳转到对应棋盘格状态
+
 ```
 import React, {Component} from 'react';
 
@@ -372,8 +388,10 @@ class Steps extends Component{
 export default Steps;
 
 ```
+
 Steps 组件需要从上层组件传入 history、turnToStep 数据。
 下面在 TicTacToe 组件中调用 Steps 组件，并添加 history 数据和 turnToStep 函数。
+
 ```
  import React, {Component} from 'react';
 import Header from './Header';
@@ -484,6 +502,7 @@ class TicTacToe extends Component{
 
 export default TicTacToe;
 ```
+
 history.data 存储每一步点击的数据，history.flag 为是否点击了步骤条，若点击了步骤条，再下次点击棋盘时，先将期盼恢复为最后一次下棋结束的样子。
 相应地，onClickSquare 函数也进行了更改。
 ### 5. 功能完善
@@ -493,6 +512,7 @@ history.data 存储每一步点击的数据，history.flag 为是否点击了步
 * 再玩一把功能
 思路：将所有数据置为初始值即可。
 完善后的 TicTacToe 组件代码如下：
+
 ```
 import React, {Component} from 'react';
 import Board from './Board';
@@ -630,7 +650,9 @@ class TicTacToe extends Component{
 
 export default TicTacToe;
 ```
+
 再给 Header 组件 的 button 添加点击事件。
+
 ```
 import React, {Component} from 'react';
 
@@ -649,9 +671,11 @@ class Header extends Component{
 
 export default Header;
 ```
+
 至此，功能完善完毕。
 ### 6. 样式调整
 最后再进行样式调整。
+
 ```
 .game{
   width: 500px;
@@ -709,6 +733,7 @@ export default Header;
   }
 }
 ```
+
 效果如下：
 ![](http://upload-images.jianshu.io/upload_images/8879462-da2e4dc7cbd68462.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
