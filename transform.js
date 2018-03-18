@@ -10,6 +10,8 @@ fs.readdir('./list', function (error, files) {
         let p = path.join('./list', file);
         let markdown = fs.readFileSync(p).toString();
         let html = marked(markdown);
+        console.log('html', html);
+
         let template = fs.readFileSync('./template.html').toString();
         let result = template.replace('%content%', html);
         fs.writeFileSync(file+'.html', result);
@@ -18,7 +20,6 @@ fs.readdir('./list', function (error, files) {
 
 fs.readdir('./', function (error, files) {
     files.forEach(file=>{
-        console.log('file', file);
         if(file.substring(file.length-7, file.length) === 'md.html'){
             list.push(file);
         }
