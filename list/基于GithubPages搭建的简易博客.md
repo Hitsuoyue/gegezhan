@@ -35,7 +35,7 @@ GitHub Pages 的 Source 选项下，选择 master branch 并保存：
 ![](http://upload-images.jianshu.io/upload_images/8879462-f6c84f5b3db05700.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300)
 ---
 ## 将  Markdown 格式的内容转换为 HTML 元素
-##### 1. 新建 template.html
+#####1. 新建 template.html
 此处，使用 marked 插件，可将用 Markdown 语法写的内容转换为 HTML 元素。
 ```
 <!doctype html>
@@ -65,7 +65,7 @@ GitHub Pages 的 Source 选项下，选择 master branch 并保存：
 </body>
 </html>
 ```
-##### 2. 再次点击 Settings 进入网页，在网址后加入/template，即可预览 template.html 网页，效果如下：
+#####2. 再次点击 Settings 进入网页，在网址后加入/template，即可预览 template.html 网页，效果如下：
 ![](http://upload-images.jianshu.io/upload_images/8879462-0a25a8bcdd7d3b73.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300)
 
 ---
@@ -77,7 +77,7 @@ GitHub Pages 的 Source 选项下，选择 master branch 并保存：
 安装完成后，验证是否安装成功：打开命令行，输入 node -v ，安装正常，则会在下行输出 node 版本号，如：v8.9.1
 至此，安装成功。
 ---
-## 将  Markdown 文档转换为直接展示 Markdown 内容的 html 文件
+##将  Markdown 文档转换为直接展示 Markdown 内容的 html 文件
 思路：将第3步中 template.html 文件中 div 内的内容替换为 要展示的 Markdown 文档内容，即可。
 此处，利用 Node.js 的文件读写功能。
 点击 [查看Node 文档](http://nodejs.cn/api/)
@@ -98,26 +98,30 @@ console.log('this is transform.js');
 # this is article2
 ## by me
 ```
-##### 5. 修改 template.html 文件，删除 div 内内容，改为占位符 %content% ：
+##### 5. 修改 template.html 文件，删除 div 内内容，改为占位符 %content%，删除 `<script>` 中的转换内容，放到 transform.js 内处理 ：
 ```
 <div id="content">%content%</div>
 ```
-##### 6. 修改 transform.js 文件如下：
+##### 6. 安装 marked 依赖：
+执行 npm install marked --save
+##### 7. 修改 transform.js 文件如下：
 ```
 const fs = require('fs');
 const path = require('path');
+const marked = require('marked');
 
 fs.readdir('./list', function (error, files) {
-    files.forEach(file => {
+    files.forEach( file=>{
         let p = path.join('./list', file);
         let markdown = fs.readFileSync(p).toString();
+        let html = marked(markdown);
         let template = fs.readFileSync('./template.html').toString();
-        let result = template.replace('%content%', markdown);
-        fs.writeFileSync(file + '.html', result);
+        let result = template.replace('%content%', html);
+        fs.writeFileSync(file+'.html', result);
     })
 });
 ```
-##### 7. 再次执行 node transform.js，则会在根目录生成 article1.md.html 和 article2.md.html 文件，打开文件预览如下：
+##### 8. 再次执行 node transform.js，则会在根目录生成 article1.md.html 和 article2.md.html 文件，打开文件预览如下：
 ![article1](http://upload-images.jianshu.io/upload_images/8879462-21a0df95c9d61083.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300)
 ![article2](http://upload-images.jianshu.io/upload_images/8879462-37d0397363b0d543.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300)
 至此，可通过执行 transform.js 文件生成 Markdown 文档对应的 html 文件。
@@ -140,6 +144,7 @@ fs.readdir('./list', function (error, files) {
 const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
+const marked = require('marked');
 const baseUrl = 'https://hitsuoyue.github.io/gegezhan/';
 let list = [];
 
@@ -147,8 +152,9 @@ fs.readdir('./list', function (error, files) {
     files.forEach( file=>{
         let p = path.join('./list', file);
         let markdown = fs.readFileSync(p).toString();
+        let html = marked(markdown);
         let template = fs.readFileSync('./template.html').toString();
-        let result = template.replace('%content%', markdown);
+        let result = template.replace('%content%', html);
         fs.writeFileSync(file+'.html', result);
     })
 });
@@ -157,20 +163,21 @@ fs.readdir('./', function (error, files) {
     files.forEach(file=>{
         if(file.substring(file.length-7, file.length) === 'md.html'){
             list.push(file);
-        };
+        }
     })
     modifyList();
 });
 
 function modifyList() {
     let content = fs.readFileSync('./index.html');
-    console.log('11111')
     $ = cheerio.load(content);
     let dom = $('#content');
     dom.empty();
     let ul = `<ul class="container"></ul>`;
     dom.append(ul);
     let container = $('.container');
+
+
     list.forEach((item,index)=>{
         let url = `${baseUrl}${item}`;
         let title = item.substring(0, item.length-8);

@@ -44,8 +44,8 @@ GitHub Pages 的 Source 选项下，选择 master branch 并保存：
 <img src="http://upload-images.jianshu.io/upload_images/8879462-bb63cad6ee335b9d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/620" alt=""></p>
 <h2 id=""><img src="http://upload-images.jianshu.io/upload_images/8879462-f6c84f5b3db05700.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300" alt=""></h2>
 <h2 id="-markdown-html-">将  Markdown 格式的内容转换为 HTML 元素</h2>
-<h5 id="1-template-html">1. 新建 template.html</h5>
-<p>此处，使用 marked 插件，可将用 Markdown 语法写的内容转换为 HTML 元素。</p>
+<p>#####1. 新建 template.html
+此处，使用 marked 插件，可将用 Markdown 语法写的内容转换为 HTML 元素。</p>
 <pre><code>&lt;!doctype html&gt;
 &lt;html&gt;
 &lt;head&gt;
@@ -72,8 +72,8 @@ GitHub Pages 的 Source 选项下，选择 master branch 并保存：
   &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-</code></pre><h5 id="2-settings-template-template-html-">2. 再次点击 Settings 进入网页，在网址后加入/template，即可预览 template.html 网页，效果如下：</h5>
-<p><img src="http://upload-images.jianshu.io/upload_images/8879462-0a25a8bcdd7d3b73.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300" alt=""></p>
+</code></pre><p>#####2. 再次点击 Settings 进入网页，在网址后加入/template，即可预览 template.html 网页，效果如下：
+<img src="http://upload-images.jianshu.io/upload_images/8879462-0a25a8bcdd7d3b73.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300" alt=""></p>
 <hr>
 <h2 id="-node-js">下载并安装 Node.js</h2>
 <p>使用 Node.js，首先要安装 Node 环境。
@@ -81,8 +81,8 @@ GitHub Pages 的 Source 选项下，选择 master branch 并保存：
 安装时，要勾选 <code>Add to Path</code>，则 node 环境变量会被自动添加。
 安装完成后，验证是否安装成功：打开命令行，输入 node -v ，安装正常，则会在下行输出 node 版本号，如：v8.9.1</p>
 <h2 id="-">至此，安装成功。</h2>
-<h2 id="-markdown-markdown-html-">将  Markdown 文档转换为直接展示 Markdown 内容的 html 文件</h2>
-<p>思路：将第3步中 template.html 文件中 div 内的内容替换为 要展示的 Markdown 文档内容，即可。
+<p>##将  Markdown 文档转换为直接展示 Markdown 内容的 html 文件
+思路：将第3步中 template.html 文件中 div 内的内容替换为 要展示的 Markdown 文档内容，即可。
 此处，利用 Node.js 的文件读写功能。
 点击 <a href="http://nodejs.cn/api/">查看Node 文档</a></p>
 <h5 id="1-">1. 将仓库内容克隆到本地</h5>
@@ -96,22 +96,26 @@ GitHub Pages 的 Source 选项下，选择 master branch 并保存：
 ## by me
 </code></pre><pre><code># this is article2
 ## by me
-</code></pre><h5 id="5-template-html-div-content-">5. 修改 template.html 文件，删除 div 内内容，改为占位符 %content% ：</h5>
+</code></pre><h5 id="5-template-html-div-content-script-transform-js-">5. 修改 template.html 文件，删除 div 内内容，改为占位符 %content%，删除 <code>&lt;script&gt;</code> 中的转换内容，放到 transform.js 内处理 ：</h5>
 <pre><code>&lt;div id=&quot;content&quot;&gt;%content%&lt;/div&gt;
-</code></pre><h5 id="6-transform-js-">6. 修改 transform.js 文件如下：</h5>
+</code></pre><h5 id="6-marked-">6. 安装 marked 依赖：</h5>
+<p>执行 npm install marked --save</p>
+<h5 id="7-transform-js-">7. 修改 transform.js 文件如下：</h5>
 <pre><code>const fs = require(&#39;fs&#39;);
 const path = require(&#39;path&#39;);
+const marked = require(&#39;marked&#39;);
 
 fs.readdir(&#39;./list&#39;, function (error, files) {
-    files.forEach(file =&gt; {
+    files.forEach( file=&gt;{
         let p = path.join(&#39;./list&#39;, file);
         let markdown = fs.readFileSync(p).toString();
+        let html = marked(markdown);
         let template = fs.readFileSync(&#39;./template.html&#39;).toString();
-        let result = template.replace(&#39;%content%&#39;, markdown);
-        fs.writeFileSync(file + &#39;.html&#39;, result);
+        let result = template.replace(&#39;%content%&#39;, html);
+        fs.writeFileSync(file+&#39;.html&#39;, result);
     })
 });
-</code></pre><h5 id="7-node-transform-js-article1-md-html-article2-md-html-">7. 再次执行 node transform.js，则会在根目录生成 article1.md.html 和 article2.md.html 文件，打开文件预览如下：</h5>
+</code></pre><h5 id="8-node-transform-js-article1-md-html-article2-md-html-">8. 再次执行 node transform.js，则会在根目录生成 article1.md.html 和 article2.md.html 文件，打开文件预览如下：</h5>
 <p><img src="http://upload-images.jianshu.io/upload_images/8879462-21a0df95c9d61083.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300" alt="article1">
 <img src="http://upload-images.jianshu.io/upload_images/8879462-37d0397363b0d543.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300" alt="article2"></p>
 <h2 id="-transform-js-markdown-html-">至此，可通过执行 transform.js 文件生成 Markdown 文档对应的 html 文件。</h2>
@@ -130,6 +134,7 @@ fs.readdir(&#39;./list&#39;, function (error, files) {
 <pre><code>const fs = require(&#39;fs&#39;);
 const path = require(&#39;path&#39;);
 const cheerio = require(&#39;cheerio&#39;);
+const marked = require(&#39;marked&#39;);
 const baseUrl = &#39;https://hitsuoyue.github.io/gegezhan/&#39;;
 let list = [];
 
@@ -137,8 +142,9 @@ fs.readdir(&#39;./list&#39;, function (error, files) {
     files.forEach( file=&gt;{
         let p = path.join(&#39;./list&#39;, file);
         let markdown = fs.readFileSync(p).toString();
+        let html = marked(markdown);
         let template = fs.readFileSync(&#39;./template.html&#39;).toString();
-        let result = template.replace(&#39;%content%&#39;, markdown);
+        let result = template.replace(&#39;%content%&#39;, html);
         fs.writeFileSync(file+&#39;.html&#39;, result);
     })
 });
@@ -147,20 +153,21 @@ fs.readdir(&#39;./&#39;, function (error, files) {
     files.forEach(file=&gt;{
         if(file.substring(file.length-7, file.length) === &#39;md.html&#39;){
             list.push(file);
-        };
+        }
     })
     modifyList();
 });
 
 function modifyList() {
     let content = fs.readFileSync(&#39;./index.html&#39;);
-    console.log(&#39;11111&#39;)
     $ = cheerio.load(content);
     let dom = $(&#39;#content&#39;);
     dom.empty();
     let ul = `&lt;ul class=&quot;container&quot;&gt;&lt;/ul&gt;`;
     dom.append(ul);
     let container = $(&#39;.container&#39;);
+
+
     list.forEach((item,index)=&gt;{
         let url = `${baseUrl}${item}`;
         let title = item.substring(0, item.length-8);

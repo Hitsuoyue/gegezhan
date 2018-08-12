@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>template</title>
+  <link rel="stylesheet" href="./index.css">
+  <script src="https://cdn.bootcss.com/marked/0.3.17/marked.min.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <div id="content"><h1 id="react-">React 学习笔记——组件使用篇</h1>
+<hr>
+<p><img src="https://upload-images.jianshu.io/upload_images/8879462-b646a80a1fba09c6.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="react生命周期"></p>
+<h3 id="-">挂载阶段</h3>
+<p>我们一般在 <code>constructor</code> 里面进行组件自身状态 <code>state</code> 的初始化；</p>
+<p><strong>componentWillMount()——</strong>组件挂载开始之前、即 <code>render</code> 方法开始前调用。</p>
+<p>一般在 <code>componentWillMount()</code> 里面进行组件的启动工作：请求数据、启动定时器；</p>
+<p><strong>componentDidMount()——</strong>组件挂载完成、即 <code>render</code> 后， <code>DOM</code> 元素已经插入页面后调用。</p>
+<p>一般在 <code>componentDidMount()</code> 里面进行一些需要依赖 <code>DOM</code> 的操作：动画等；</p>
+<p><strong>componentWillUnmount()——</strong>组件对应的 <code>DOM</code> 元素从页面中删除前调用。</p>
+<p>在 <code>componentWillUnmount()</code> 里面进行数据的清理工作：定时器清理，监听卸载等。</p>
+<h3 id="-">更新阶段</h3>
+<p>一般有两种情况会导致组件更新：属性（props）改变或状态（state）改变。</p>
+<p><strong>shouldComponentUpdate(nextProps, nextState):</strong></p>
+<p>这个方法可控制是否重新渲染，返回 <code>true</code> 则重新渲染，返回 <code>false</code> 则不会重新渲染。</p>
+<p>这个方法在优化性能上非常有用，但也不易于维护，若使用此方法不能在性能上得到很大提升，则不建议轻易使用。</p>
+<p>状态（state）改变会直接调用 <code>shouldComponentUpdate(nextProps, nextState)</code> 。</p>
+<p><strong>componentWillReceiveProps(nextProps):</strong> </p>
+<p>组件从父组件接收到新的 <code>props</code> 前调用，进而调用 <code>shouldComponentUpdate()</code> ，判断是否重新渲染。</p>
+<p><strong>componentWillUpdate():</strong>
+组件开始重新渲染前调用。</p>
+<p><strong>componentDidUpdate():</strong>
+组件重新渲染 <code>DOM</code> 更新后调用。</p>
+</div>
+</div>
+  <script>
+    // let content = document.getElementById('content');
+    // let markdown = content.innerHTML;
+    // let newMarkdown = HTMLDecode(markdown);
+    // let html = marked(newMarkdown);
+    // content.innerHTML = html;
+    //
+    // //特殊字符在获取 innerHTML 时，会被转换为转义字符，影响 Markdown 内容转换，此处反转回来。 &gt对应 >
+    // function HTMLDecode(text) {
+    //   return text.replace(/&gt;/g, '>')
+    // }
+  </script>
+</body>
+</html>
